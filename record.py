@@ -74,7 +74,8 @@ def normalize_recorded_code(source):
 
         cleaned.append(line.expandtabs(4).rstrip())
 
-    return dedent("\n".join(cleaned)).strip("\n")
+    sanitized = dedent("\n".join(cleaned)).strip("\n")
+    return sanitized.replace("\t", "    ")
 
 
 def convert_to_pytest(recorded_file, output_file):
