@@ -1,6 +1,8 @@
 ﻿import ctypes
 import subprocess
+import sys
 import time
+from pathlib import Path
 
 import pytest
 from pywinauto import Desktop
@@ -59,3 +61,14 @@ def nativeoffice():
         app.close()
     except Exception:
         pass
+
+
+def pytest_sessionfinish(session, exitstatus):
+    root = Path(__file__).resolve().parent
+    report_script = root / "allure-report.py"
+    if report_script.exists():
+        subprocess.run(
+            [sys.executable, str(report_script)],
+            cwd=str(root),
+            check=False,
+        )
